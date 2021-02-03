@@ -38,9 +38,8 @@
 #include <assert.h>
 
 extern Bit8u int10_font_14[256 * 14];
-extern Program * first_shell;
 extern bool MSG_Write(const char *);
-extern void GFX_SetTitle(Bit32s cycles, Bits frameskip, bool paused);
+extern void GFX_SetTitle(Bit32s cycles, int frameskip, bool paused);
 
 static int cursor, saved_bpp;
 static int old_unicode;
@@ -454,10 +453,9 @@ public:
 		if (arg == "OK") section->data = *(std::string*)content->getText();
 		if (arg == "OK" || arg == "Cancel") close();
 		else if (arg == "Append Shell Commands") {
-			DOS_Shell *s = static_cast<DOS_Shell *>(first_shell);
-			std::list<std::string>::reverse_iterator i = s->l_history.rbegin();
+			std::list<std::string>::reverse_iterator i = first_shell->l_history.rbegin();
 			std::string lines = *(std::string*)content->getText();
-			while (i != s->l_history.rend()) {
+			while (i != first_shell->l_history.rend()) {
 				lines += "\n";
 				lines += *i;
 				++i;
